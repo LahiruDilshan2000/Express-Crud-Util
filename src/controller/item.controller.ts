@@ -1,6 +1,5 @@
 import express from "express";
 import CustomResponse from "../dtos/custom.response";
-import User from "../model/User";
 
 
 export const saveItem = async (req: express.Request, res: express.Response) => {
