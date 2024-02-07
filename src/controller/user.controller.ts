@@ -1,8 +1,18 @@
 import express from "express";
 import CustomResponse from "../dtos/custom.response";
+import User from "../model/User";
 
 
 export const saveUser =async (req:express.Request, res:express.Response) => {
+
+    let req_body = req.body;
+    console.log(req_body)
+    try {
+        User.create(req_body)
+    }catch (err){
+        console.log(err)
+    }
+
     res.status(200).send(
         new CustomResponse(
             200,

@@ -1,15 +1,12 @@
 import express from "express";
 import CustomResponse from "../dtos/custom.response";
-import db from "../db";
+import User from "../model/User";
 
 
 export const saveItem = async (req: express.Request, res: express.Response) => {
     try {
-        db.pool.getConnection((err, connection) => {
-            if (err) throw err;
-            connection.execute('SELECT `field` FROM `table`');
-        });
-        ///const [rows, fields] = await pool.query('SELECT * FROM itrm');
+
+        //User.create(req.body)
     }catch (error){
         console.log(error);
     }
