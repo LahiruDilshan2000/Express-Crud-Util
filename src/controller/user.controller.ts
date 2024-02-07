@@ -8,6 +8,7 @@ import process from "process";
 
 export const saveUser = async (req: express.Request, res: express.Response) => {
     try {
+
         let req_body = req.body;
 
         bcrypt.hash(req_body.password, 8, async (err, hash) => {
@@ -36,7 +37,7 @@ export const saveUser = async (req: express.Request, res: express.Response) => {
                 })
         });
     } catch (err) {
-        res.status(500).send("Error");
+        res.status(500).send("Something went wrong !");
     }
 }
 
@@ -44,7 +45,7 @@ export const getUser = async (req: express.Request, res: express.Response) => {
 
     try {
 
-        let user:any = await User.findByPk(req.params.id);
+        const user:any = await User.findByPk(req.params.id);
 
         if (user) {
 
@@ -60,7 +61,7 @@ export const getUser = async (req: express.Request, res: express.Response) => {
         } else {
             res.status(404).send(
                 new CustomResponse(
-                    400,
+                    404,
                     "Users not found !",
                 )
             );
@@ -68,7 +69,7 @@ export const getUser = async (req: express.Request, res: express.Response) => {
 
 
     } catch (err) {
-        res.status(500).send("Error");
+        res.status(500).send("Something went wrong !");
     }
 }
 
@@ -79,16 +80,15 @@ export const authUser = async (req: express.Request, res: express.Response) => {
         // email, password
         let request_body = req.body;
 
-        console.log(request_body)
 
-        let user: any = await User.findOne({
+        const user: any = await User.findOne({
             where: {
                 email: request_body.email
             }
         });
         if (user) {
 
-            let isMatch = await bcrypt.compare(request_body.password, user.password);
+            const isMatch = await bcrypt.compare(request_body.password, user.password);
 
             if (isMatch) {
 
@@ -129,6 +129,6 @@ export const authUser = async (req: express.Request, res: express.Response) => {
             );
         }
     } catch (err) {
-        res.status(500).send("Error");
+        res.status(500).send("Something went wrong !");
     }
 }
