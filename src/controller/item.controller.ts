@@ -96,7 +96,7 @@ export const getAllItems = async (req: express.Request, res: express.Response) =
 
     try {
 
-        const items = await User.findAll();
+        const items = await Item.findAll();
 
         if (items.length > 0){
             res.status(200).send(
@@ -126,9 +126,9 @@ export const updateItem = async (req: express.Request, res: express.Response) =>
 
         let req_body = req.body;
 
-        const [updatedRowsCount] = await User.update(req_body, {
+        const [updatedRowsCount] = await Item.update(req_body, {
             where:{
-                id: req_body.id
+                id: req_body.id, itemCode:req_body.itemCode
             }
         });
         if (updatedRowsCount === 0){

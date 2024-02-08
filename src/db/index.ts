@@ -1,15 +1,29 @@
-import mysql from "mysql2/promise";
+import mysql from "mysql2/promise"
 import dotenv from "dotenv";
 import process from "process";
-import {Sequelize, Options} from "sequelize";
+import {Sequelize} from "sequelize";
 
 dotenv.config();
 
-declare module 'sequelize' {
-    interface Options {
-        createDatabaseIfNotExist?: boolean;
-    }
+const createDatabase = async () => {
+
+    await mysql.createConnection({
+        user: process.env.MYSQL_USER as string,
+        password: process.env.MYSQL_PASSWORD as string
+    })
+        .then((connection) => {
+            connection.query(`CREATE DATABASE ${process.env.MYSQL_DATABASE as string};`)
+                .then(() => {
+                    console.log("Database created successfully");
+                })
+                .catch(reason => {
+                    console.log("Database connected successfully");
+                });
+            connection.end(true);
+        });
 }
+
+createDatabase();
 
 const sequelize = new Sequelize(
     process.env.MYSQL_DATABASE as string,
@@ -17,14 +31,13 @@ const sequelize = new Sequelize(
     process.env.MYSQL_PASSWORD as string, {
         host: process.env.MYSQL_HOST as string,
         dialect: "mysql",
-        logging:true,
-        pool:{
+        logging: true,
+        pool: {
             max: 10,
             min: 0,
             acquire: 30000,
             idle: 10000
         },
-        createDatabaseIfNotExist: true,
     });
 
 sequelize.sync({force: false})

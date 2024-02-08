@@ -26,7 +26,8 @@ export const saveUser = async (req: express.Request, res: express.Response) => {
                         )
                     );
                 })
-                .then(value => {
+                .then((value:any) => {
+                    value.password = "";
                     res.status(201).send(
                         new CustomResponse(
                             201,
